@@ -1,7 +1,7 @@
-# OpenShift Virtualization 2.5 Hackfest
+# OpenShift 4.8 Hackfest
 
 This document provides instructions for using a hypervisor in the Red Hat Field Product Management
-lab for the OpenShift Virtualization (CNV) 2.5 hackfest.
+lab for the OpenShift 4.8 hackfest.
 
 These instructions use the environment variable `NODE` to refer to the hypervisor.  Set this
 variable to the fully qualified domain name of your assigned hypervisor.
@@ -17,7 +17,7 @@ $ export NODE=node06.pemlab.rdu2.redhat.com
 Password-less authentication makes access to the hpervisor more convenient.  It is also required
 for `virt-manager` access to the hypervisor.
 
-**NOTE:** All passwords in the lab environment are set to `CNV25h@ck`.
+**NOTE:** All passwords in the lab environment are set to `OCP48h@ck`.
 
 ```
 $ ssh-copy-id root@${NODE}
@@ -89,7 +89,7 @@ Select **Connect to remote host over SSH**, enter the **Hostname:** of your hype
 ## Explore your lab environment
 
 Log in to your hypervisor.
-All passwords in the environment are set to `CNV25h@ck`.
+All passwords in the environment are set to `OCP48h@ck`.
 
 ```
 $ ssh -L 3128:localhost:3128 root@${NODE}
