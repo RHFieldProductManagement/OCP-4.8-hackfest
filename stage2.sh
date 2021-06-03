@@ -10,7 +10,7 @@ ssh root@${NODE} 'virsh net-define /tmp/net-provisioning.xml && virsh net-autost
 ssh root@${NODE} 'virsh net-define /tmp/net-cnv.xml && virsh net-autostart cnv && virsh net-start cnv'
 
 ssh root@${NODE} 'for VM in {master,worker}-{0..2} ; do qemu-img create -f qcow2 /var/lib/libvirt/images/${VM}.qcow2 120G ; done'
-ssh root@${NODE} wget -P /var/lib/libvirt/images http://10.11.173.1/pub/CNV-2.5-hackfest/provisioner.qcow2
+ssh root@${NODE} wget -P /var/lib/libvirt/images http://10.11.176.1/pub/CNV-2.5-hackfest/provisioner.qcow2
 
 ssh root@${NODE} virt-install -n provisioner --memory 16384 --vcpus 4 --cpu host --os-variant rhel8.2 \
 	--disk path=/var/lib/libvirt/images/provisioner.qcow2,bus=scsi,discard=unmap \
@@ -56,15 +56,18 @@ ssh root@${NODE} virt-install -n worker-2 --memory 16384 --vcpus 4 --cpu host --
 	-w network=baremetal,model=virtio,mac=de:ad:be:ef:02:02 \
 	-w network=cnv,model=virtio --controller scsi,model=virtio-scsi --import --noreboot
 
-ssh root@${NODE} yum -y install python2-virtualbmc
-ssh root@${NODE} yum -y update http://10.11.173.1/pub/CNV-2.5-hackfest/python2-pyghmi-1.0.22-1.1.el7.noarch.rpm
+#ssh root@${NODE} yum -y install python2-virtualbmc
+#ssh root@${NODE} yum -y update http://10.11.176.1/pub/CNV-2.5-hackfest/python2-pyghmi-1.0.22-1.1.el7.noarch.rpm
 
-ssh root@${NODE} vbmc add --username admin --password CNV25h@ck --address 192.168.123.248 master-0
-ssh root@${NODE} vbmc add --username admin --password CNV25h@ck --address 192.168.123.249 master-1
-ssh root@${NODE} vbmc add --username admin --password CNV25h@ck --address 192.168.123.250 master-2
-ssh root@${NODE} vbmc add --username admin --password CNV25h@ck --address 192.168.123.251 worker-0
-ssh root@${NODE} vbmc add --username admin --password CNV25h@ck --address 192.168.123.252 worker-1
-ssh root@${NODE} vbmc add --username admin --password CNV25h@ck --address 192.168.123.253 worker-2
+ssh root@${NODE} yum -y install http://10.11.176.1/pub/CNV-2.5-hackfest/python2-pyghmi-1.0.44-1.1.el7.noarch.rpm \
+	http://10.11.176.1/pub/CNV-2.5-hackfest/python2-virtualbmc-1.2.0-1.1.el7.noarch.rpm
+
+ssh root@${NODE} vbmc add --username admin --password OCP48h@ck --address 192.168.123.248 master-0
+ssh root@${NODE} vbmc add --username admin --password OCP48h@ck --address 192.168.123.249 master-1
+ssh root@${NODE} vbmc add --username admin --password OCP48h@ck --address 192.168.123.250 master-2
+ssh root@${NODE} vbmc add --username admin --password OCP48h@ck --address 192.168.123.251 worker-0
+ssh root@${NODE} vbmc add --username admin --password OCP48h@ck --address 192.168.123.252 worker-1
+ssh root@${NODE} vbmc add --username admin --password OCP48h@ck --address 192.168.123.253 worker-2
 
 scp vbmc@.service root@${NODE}:/etc/systemd/system/
 ssh root@${NODE} systemctl daemon-reload
