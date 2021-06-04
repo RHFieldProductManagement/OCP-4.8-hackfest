@@ -190,11 +190,11 @@ Log in as the `kni` user on the provisioning node.
 Last login: Thu Nov 12 23:36:08 2020 from 192.168.123.254
 ```
 
-Download [`install-config.yaml`](https://raw.githubusercontent.com/RHFieldProductManagement/CNV-2.5-hackfest/master/install-config.yaml).
+Download [`install-config.yaml`](https://raw.githubusercontent.com/RHFieldProductManagement/OCP-4.8-hackfest/master/install-config.yaml).
 
 ```
 [kni@prov ~]$ curl -O \
-	https://raw.githubusercontent.com/RHFieldProductManagement/CNV-2.5-hackfest/master/install-config.yaml
+	https://raw.githubusercontent.com/RHFieldProductManagement/OCP-4.8-hackfest/master/install-config.yaml
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
 100  1462  100  1462    0     0  10750      0 --:--:-- --:--:-- --:--:-- 10750
@@ -250,12 +250,19 @@ AZky+xMaq79/SyAMWiNw0CBUFf48j5NUrFS24IfqBDqT4OQcDn+43f+lw8esN3UNRKu058c4+00+3010
 = kni@prov.ocp.hackfest'
 ```
 
+> **NOTE:** Version `4.8.0-fc.3` of the OpenShift client (`/usr/local/bin/oc`) and the bare metal
+> installation program (`/usr/local/bin/openshift-baremetal-install`) have been pre-installed on the
+> provisioning node.  To install a different version, follow the instructions
+> [here](https://docs.openshift.com/container-platform/4.7/installing/installing_bare_metal_ipi/ipi-install-installation-workflow.html#retrieving-the-openshift-installer_ipi-install-installation-workflow).
+> (To install a pre-release version, modify the URLs to begin with
+> `https://mirror.openshift.com/pub/openshift-v4/clients/ocp-dev-preview/`.)
+
 Create the OpenShift manifests.
 
 ```
 [kni@prov ~]$ mkdir clusterconfigs
 [kni@prov ~]$ cp install-config.yaml clusterconfigs/
-[kni@prov ~]$ ./openshift-baremetal-install --dir ~/clusterconfigs create manifests
+[kni@prov ~]$ openshift-baremetal-install --dir ~/clusterconfigs create manifests
 INFO Consuming Install Config from target directory
 WARNING Discarding the Openshift Manifests that was provided in the target directory because its …
 …dependencies are dirty and it needs to be regenerated
@@ -265,7 +272,7 @@ INFO Manifests created in: /home/kni/clusterconfigs/manifests and /home/kni/clus
 Create the OpenShift cluster.
 
 ```
-[kni@prov ~]$ ./openshift-baremetal-install --dir ~/clusterconfigs --log-level debug create cluster
+[kni@prov ~]$ openshift-baremetal-install --dir ~/clusterconfigs --log-level debug create cluster
 DEBUG OpenShift Installer 4.6.3
 DEBUG Built from commit a4f0869e0d2a5b2d645f0f28ef9e4b100fa8f779
 DEBUG Fetching Metadata...
