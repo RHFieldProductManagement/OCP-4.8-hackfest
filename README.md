@@ -12,7 +12,10 @@ For example:
 $ export NODE=node06.pemlab.rdu2.redhat.com
 ```
 
-## (Optional) Set up SSH key-based authentication
+> **NOTE:** The lab is only accessible from within the Red Hat corporate network.  You will need a
+> VPN connection to access your node.
+
+## [OPTIONAL] Set up SSH key-based authentication
 
 Password-less authentication makes access to the hpervisor more convenient.  It is also required
 for `virt-manager` access to the hypervisor.
@@ -37,7 +40,8 @@ Now try logging into the machine, with:   "ssh 'root@node06.pemlab.rdu2.redhat.c
 and check to make sure that only the key(s) you wanted were added.
 ```
 
-If you have not previously created an SSH key, use the `ssh-keygen` command to create one.
+If you receive a `No identities found` error message, use the `ssh-keygen` command to create an SSH
+keypair.
 
 ```
 $ ssh-copy-id root@${NODE}
@@ -66,7 +70,9 @@ The key's randomart image is:
 +----[SHA256]-----+
 ```
 
-## (Optional) Connect `virt-manager` to your hypervisor
+After creating the keypair, repeat the `ssh-copy-id` command above.
+
+## [OPTIONAL] Connect `virt-manager` to your hypervisor
 
 Connecting `virt-manager` to your hypervisor provides a convenient way to examine the details of
 your OpenShift nodes and view their consoles.
@@ -147,7 +153,7 @@ prov            8000.feadbeef0500       no              vnet0
 
 ```
 [root@localhost ~]# cat /etc/dnsmasq.conf
-server=10.11.173.1
+server=10.11.176.1
 no-resolv
 strict-order
 local=/ocp.hackfest/
@@ -159,7 +165,7 @@ dhcp-range=192.168.123.101,192.168.123.200
 dhcp-no-override
 dhcp-authoritative
 dhcp-lease-max=100
-dhcp-option=option:ntp-server,10.11.173.1
+dhcp-option=option:ntp-server,10.11.176.1
 dhcp-host=de:ad:be:ef:00:00,192.168.123.1,prov
 dhcp-host=de:ad:be:ef:01:00,192.168.123.2,master-0
 dhcp-host=de:ad:be:ef:01:01,192.168.123.3,master-1
@@ -189,6 +195,11 @@ Log in as the `kni` user on the provisioning node.
 [root@localhost ~]# ssh kni@prov
 Last login: Thu Nov 12 23:36:08 2020 from 192.168.123.254
 ```
+
+> **NOTE:** The provisioning node is a Red Hat Enterprise Linux 8 VM, on which all packages required
+> for the OpenShift installation have been installed.  It is **not** pre-registered with Red Hat
+> subscription management.  If you wish to install additional software, register the system with
+> your employee (or other) credentials.
 
 Download [`install-config.yaml`](https://raw.githubusercontent.com/RHFieldProductManagement/OCP-4.8-hackfest/master/install-config.yaml).
 
@@ -299,7 +310,7 @@ DEBUG  Cluster Operators: 35m0s
 INFO Time elapsed: 1h11m47s
 ```
 
-The installation will take approximately 1 hour.
+The installation should take approximately 80 minutes.
 
 ## Access the OpenShift Console
 
